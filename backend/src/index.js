@@ -2,9 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const http = require("http");
 const routes = require("./routes");
+const { setupWebSocket } = require("./websocket");
 
 const app = express();
+const server = http.Server(app);
+
+setupWebSocket(server);
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -20,6 +25,6 @@ app.use(routes);
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`);
 });
